@@ -30,6 +30,9 @@ export class UsersService {
     }
 
     find(email: string) {
+        // OBS: We're searching for unique query param(the email), to query for more than one
+        //      que should use query builders in TypeOrm!!!!
+
         // If not exists, this will return a empty array...
         const users = this.userRepository.find({ where: { email } });
 
