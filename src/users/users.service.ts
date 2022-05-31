@@ -22,7 +22,6 @@ export class UsersService {
 
     async findById(id: number) {
         const user = await this.userRepository.findOneBy({ id });
-        console.log('ok', user);
         if(!user){
             throw new NotFoundException('This user does not exist.');
         }
@@ -40,7 +39,7 @@ export class UsersService {
         return users;
     }
 
-    async updated(id: number, updatedData: Partial<User>) {
+    async update(id: number, updatedData: Partial<User>) {
         // This method is already handling the 404 exception...
         const user = await this.findById(id);
         for(let key in updatedData){
