@@ -47,5 +47,11 @@ export class UsersService {
         return updatedUser
     }
 
-    remove() {}
+    async remove(id: number) {
+        // This method is already handling the 404 exception...
+        const user = await this.findById(id);
+        const deletedUser = await this.userRepository.remove(user);
+
+        return deletedUser;
+    }
 }
