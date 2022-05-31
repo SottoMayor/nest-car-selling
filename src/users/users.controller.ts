@@ -3,6 +3,7 @@ import { SerealizeInterceptor } from 'src/interceptors/serealize.interceptor';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import { UpdateUser } from './dtos/UpdateUser.dto';
 import { UsersService } from './users.service';
+import { UserDto } from './dtos/User.dto';
 
 @Controller('auth')
 export class UsersController {
@@ -13,7 +14,7 @@ export class UsersController {
     return this.usersService.create(body);
   }
 
-  @UseInterceptors(SerealizeInterceptor)
+  @UseInterceptors(new SerealizeInterceptor(UserDto))
   @Get('/:id')
   async findUserById(@Param('id') id: string) {
     // Converting the id from string to number

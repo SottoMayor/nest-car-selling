@@ -5,15 +5,16 @@ import { map } from "rxjs/operators";
 import { plainToClass } from "class-transformer";
 
 export class SerealizeInterceptor implements NestInterceptor {
+
+    constructor(private targetDto: any){}
+
     intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> | Promise<Observable<any>> {
         // This code will run before the request is handled
-
-        console.log('Hello......')
 
         return next.handle().pipe(
             map((data: any) => {
                 // This code will be executed after the response is sent
-                console.log('....... World!!!')
+                return plainToClass(this.targetDto, data, { excludeExtraneousValues: true })
             })
         )
     }
