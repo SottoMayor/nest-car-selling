@@ -36,7 +36,16 @@ export class UsersService {
         return users;
     }
 
-    updated() {}
+    async updated(id: number, updatedData: Partial<User>) {
+        // This method is already handling the 404 exception...
+        const user = await this.findById(id);
+        for(let key in updatedData){
+            user[key] = updatedData[key];
+        }
+        const updatedUser = this.userRepository.save(user);
+
+        return updatedUser
+    }
 
     remove() {}
 }
