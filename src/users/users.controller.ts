@@ -5,6 +5,10 @@ import { UpdateUser } from './dtos/UpdateUser.dto';
 import { UsersService } from './users.service';
 import { UserDto } from './dtos/User.dto';
 
+// OBS: Serealize can be a decorator of method or class.
+//      Depending which DTO you wanna use to send the response!
+
+@Serealize(UserDto)
 @Controller('auth')
 export class UsersController {
   constructor(private usersService: UsersService){}
@@ -14,7 +18,6 @@ export class UsersController {
     return this.usersService.create(body);
   }
 
-  @Serealize(UserDto)
   @Get('/:id')
   async findUserById(@Param('id') id: string) {
     // Converting the id from string to number
