@@ -4,6 +4,10 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { plainToClass } from "class-transformer";
 
+export function Serealize(dto: any){
+    return UseInterceptors( new SerealizeInterceptor(dto) );
+}
+
 export class SerealizeInterceptor implements NestInterceptor {
 
     constructor(private targetDto: any){}
