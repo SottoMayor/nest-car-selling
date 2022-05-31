@@ -4,7 +4,13 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { plainToClass } from "class-transformer";
 
-export function Serealize(dto: any){
+// Define a class instance in the more generic possible way
+interface ClassInstance {
+    new (...args: any[]): {}
+}
+
+// Locking down the access only to classes instances, in this decorator
+export function Serealize(dto: ClassInstance){
     return UseInterceptors( new SerealizeInterceptor(dto) );
 }
 
