@@ -1,4 +1,5 @@
-import { Controller, Post, Body, Get, Patch, Delete, Param, Query } from '@nestjs/common';
+import { Controller, Post, Body, Get, Patch, Delete, Param, Query, UseInterceptors } from '@nestjs/common';
+import { SerealizeInterceptor } from 'src/interceptors/serealize.interceptor';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import { UpdateUser } from './dtos/UpdateUser.dto';
 import { UsersService } from './users.service';
@@ -12,6 +13,7 @@ export class UsersController {
     return this.usersService.create(body);
   }
 
+  @UseInterceptors(SerealizeInterceptor)
   @Get('/:id')
   async findUserById(@Param('id') id: string) {
     // Converting the id from string to number
