@@ -3,6 +3,7 @@ import { Serealize } from 'src/interceptors/serealize.interceptor';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import { UpdateUser } from './dtos/UpdateUser.dto';
 import { UsersService } from './users.service';
+import { AuthService } from './auth.service';
 import { UserDto } from './dtos/User.dto';
 
 // OBS: Serealize can be a decorator of method or class.
@@ -11,11 +12,11 @@ import { UserDto } from './dtos/User.dto';
 @Serealize(UserDto)
 @Controller('auth')
 export class UsersController {
-  constructor(private usersService: UsersService){}
+  constructor(private usersService: UsersService, private authService: AuthService){}
 
   @Post('/signup')
   async createUser(@Body() body: CreateUserDto) {
-    return this.usersService.create(body);
+    return this.authService.signup(body);
   }
 
   @Get('/:id')
