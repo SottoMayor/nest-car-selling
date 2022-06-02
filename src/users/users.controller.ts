@@ -33,6 +33,11 @@ export class UsersController {
     return await this.usersService.findById(session.userId);
   }
 
+  @Get('/signout')
+  async signout(@Session() session: any) {
+    session.userId = null;
+  }
+
   @Get('/:id')
   async findUserById(@Param('id') id: string) {
     // Converting the id from string to number
