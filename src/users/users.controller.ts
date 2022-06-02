@@ -19,6 +19,11 @@ export class UsersController {
     return this.authService.signup(body);
   }
 
+  @Post('/signin')
+  async Signin(@Body() body: CreateUserDto) {
+    return this.authService.signin(body);
+  }
+
   @Get('/:id')
   async findUserById(@Param('id') id: string) {
     // Converting the id from string to number
