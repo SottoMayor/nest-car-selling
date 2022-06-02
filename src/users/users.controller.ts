@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Patch, Delete, Param, Query, UseInterceptors } from '@nestjs/common';
+import { Controller, Post, Body, Get, Patch, Delete, Param, Query, Session } from '@nestjs/common';
 import { Serealize } from 'src/interceptors/serealize.interceptor';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import { UpdateUser } from './dtos/UpdateUser.dto';
@@ -15,13 +15,22 @@ export class UsersController {
   constructor(private usersService: UsersService, private authService: AuthService){}
 
   @Post('/signup')
-  async createUser(@Body() body: CreateUserDto) {
-    return this.authService.signup(body);
+  async createUser(@Body() body: CreateUserDto, @Session() session: any) {
+    const user = await this.authService.signup(body);
+    session.userId = user.id
+    return user;
   }
 
   @Post('/signin')
-  async Signin(@Body() body: CreateUserDto) {
-    return this.authService.signin(body);
+  async Signin(@Body() body: CreateUserDto, @Session() session: any) {
+    const user = await this.authService.signin(body);
+    session.userId = user.id;
+    return user;
+  }
+
+  @Get('/whoami')
+  async whoAmI(@Session() session: any) {
+    return await this.usersService.findById(session.userId);
   }
 
   @Get('/:id')
