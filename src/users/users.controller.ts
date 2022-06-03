@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Patch, Delete, Param, Query, Session } from '@nestjs/common';
+import { Controller, Post, Body, Get, Patch, Delete, Param, Query, Session, UseGuards } from '@nestjs/common';
 import { Serealize } from 'src/interceptors/serealize.interceptor';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import { UpdateUser } from './dtos/UpdateUser.dto';
@@ -7,6 +7,8 @@ import { AuthService } from './auth.service';
 import { UserDto } from './dtos/User.dto';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from './users.entity';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { IsAuth } from './decorators/user-auth.decorator';
 
 // OBS: Serealize can be a decorator of method or class.
 //      Depending which DTO you wanna use to send the response!
@@ -35,6 +37,7 @@ export class UsersController {
   //   return await this.usersService.findById(session.userId);
   // }
   @Get('/whoami')
+  @IsAuth()
   async whoAmI(@CurrentUser() user: User) {
     return user;
   }
