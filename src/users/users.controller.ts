@@ -5,6 +5,7 @@ import { UpdateUser } from './dtos/UpdateUser.dto';
 import { UsersService } from './users.service';
 import { AuthService } from './auth.service';
 import { UserDto } from './dtos/User.dto';
+import { CurrentUser } from './decorators/current-user.decorator';
 
 // OBS: Serealize can be a decorator of method or class.
 //      Depending which DTO you wanna use to send the response!
@@ -28,9 +29,13 @@ export class UsersController {
     return user;
   }
 
+  // @Get('/whoami')
+  // async whoAmI(@Session() session: any) {
+  //   return await this.usersService.findById(session.userId);
+  // }
   @Get('/whoami')
-  async whoAmI(@Session() session: any) {
-    return await this.usersService.findById(session.userId);
+  async whoAmI(@CurrentUser() user: string) {
+    return user;
   }
 
   @Get('/signout')
