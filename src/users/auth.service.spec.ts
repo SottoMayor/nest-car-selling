@@ -2,7 +2,7 @@ import { UsersService } from "./users.service";
 import { AuthService } from "./auth.service";
 import { Test } from "@nestjs/testing";
 import { User } from './users.entity';
-import { BadRequestException } from "@nestjs/common";
+import { BadRequestException, NotFoundException, UnprocessableEntityException } from "@nestjs/common";
 
 let service: AuthService;
 let fakeUsersService: Partial<UsersService>
@@ -55,5 +55,39 @@ describe('AuthService', () => {
         )
         .rejects
         .toThrow(BadRequestException);
+    })
+
+    it('Throws an error if any user is found with a given email', async () => {
+        // Calling the signin method
+        const call = service.signin({ email: 'foo@bar.com', password: 'password123'})
+        await expect(call)
+        .rejects
+        .toThrowError(NotFoundException);
+    })
+
+    it('Throws an error if the password is incorrect', async () => {
+        // We need mess around the fakeUsersService.find mock function to guarantee that has an user over there
+        fakeUsersService.find = () => (
+            Promise.resolve([{ email: 'foo@bar.com', password: 'password123'} as User])
+        )
+
+        // Calling the signin method
+        const call = service.signin({ email: 'foo@bar.com', password: 'incorrect_password'});
+
+        await expect(call).rejects.toThrowError(UnprocessableEntityException);
+    })
+
+    it('Returns an user if the correct password is provided', async () => {
+        // This does not work!!!! Lets fix this...
+
+        // We need mess around the fakeUsersService.find mock function to guarantee that has an user over there
+        fakeUsersService.find = (
+            () => Promise.resolve([{ email: 'foo@bar.com', password: 'password123'} as User])
+        );
+
+        // Calling the signin method
+        const user = await service.signin({ email: 'foo@bar.com', password: 'password123'});
+
+        expect(user).toBeDefined();
     })
 })
