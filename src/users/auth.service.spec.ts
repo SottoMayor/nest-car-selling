@@ -10,9 +10,17 @@ let fakeUsersService: Partial<UsersService>
 describe('AuthService', () => {
     beforeEach(async () => {
         // For all these tests, we need always to this peace of code down there... This will be initialized before our tests.
+        const users: User[] = [];
         fakeUsersService = {
-            find: () => Promise.resolve([]),
-            create: ({email, password}) => Promise.resolve({ id: 1, email: email, password: password} as User)
+            find: (email: string) => {
+                const filteredUsers = users.filter(user => user.email === email);
+                return Promise.resolve(filteredUsers);
+            },
+            create: ({email, password}) => {
+                const newUser =  { id: Math.floor(Math.random() * 999), email: email, password: password} as User;
+                users.push(newUser);
+                return Promise.resolve(newUser);
+            }
         }
     
         // Defining the module which we wanna work on
@@ -44,10 +52,9 @@ describe('AuthService', () => {
     })
 
     it('Throws an error when the user signs up with a already existing email', async () => {
-        // Modifying the mock with the purpose to find an array not empty of users
-        fakeUsersService.find = () => (
-            Promise.resolve([{ email: 'foo@bar.com', password: 'password123', id: 1} as User])
-        )
+        // We wanna sign up the user first, the we wanna use this generated data to test the signup flow...
+
+        await service.signup({ email: 'foo@bar.com', password: 'password123'})
 
         // Calling the signup method
         await expect(
@@ -66,10 +73,9 @@ describe('AuthService', () => {
     })
 
     it('Throws an error if the password is incorrect', async () => {
-        // We need mess around the fakeUsersService.find mock function to guarantee that has an user over there
-        fakeUsersService.find = () => (
-            Promise.resolve([{ email: 'foo@bar.com', password: 'password123'} as User])
-        )
+        // We wanna sign up the user first, the we wanna use this generated data to test the signin flow...
+
+        await service.signup({ email: 'foo@bar.com', password: 'password123'})
 
         // Calling the signin method
         const call = service.signin({ email: 'foo@bar.com', password: 'incorrect_password'});
@@ -78,12 +84,11 @@ describe('AuthService', () => {
     })
 
     it('Returns an user if the correct password is provided', async () => {
-        // This does not work!!!! Lets fix this...
+        // The strategy is create an user, then the password will be hashed. right after we wanna signin the user
+        // In this flow, the hashed password will be compare with original password! This is what we wanna do.
 
-        // We need mess around the fakeUsersService.find mock function to guarantee that has an user over there
-        fakeUsersService.find = (
-            () => Promise.resolve([{ email: 'foo@bar.com', password: 'password123'} as User])
-        );
+        // Creating an user
+        await service.signup({ email: 'foo@bar.com', password: 'password123'})
 
         // Calling the signin method
         const user = await service.signin({ email: 'foo@bar.com', password: 'password123'});
