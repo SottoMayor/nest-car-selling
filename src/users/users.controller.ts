@@ -1,5 +1,5 @@
 import { Controller, Post, Body, Get, Patch, Delete, Param, Query, Session, UseGuards } from '@nestjs/common';
-import { Serealize } from 'src/interceptors/serealize.interceptor';
+import { Serealize } from '../interceptors/serealize.interceptor';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import { UpdateUser } from './dtos/UpdateUser.dto';
 import { UsersService } from './users.service';
@@ -7,7 +7,6 @@ import { AuthService } from './auth.service';
 import { UserDto } from './dtos/User.dto';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from './users.entity';
-import { AuthGuard } from 'src/guards/auth.guard';
 import { IsAuth } from './decorators/user-auth.decorator';
 
 // OBS: Serealize can be a decorator of method or class.
