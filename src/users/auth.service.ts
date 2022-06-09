@@ -2,10 +2,11 @@ import { BadRequestException, NotFoundException, UnprocessableEntityException ,I
 import { UsersService } from './users.service';
 import { hash, compare } from 'bcrypt';
 import { CreateUserDto } from './dtos/CreateUser.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
-    constructor(private usersService: UsersService){}
+    constructor(private usersService: UsersService, private configService: ConfigService){}
 
     async signup(body: CreateUserDto) {
         const { email, password } = body;
@@ -22,6 +23,11 @@ export class AuthService {
     }
 
     async signin(body: CreateUserDto) {
+        // How to consume env vars inside the project...
+        const db = this.configService.get<string>('DB_NAME');
+        console.log(`Signin method running in the ${db} database...`);
+
+        // Right after this line, the business logic...
         const { email, password } = body;
 
         const users = await this.usersService.find(email);
