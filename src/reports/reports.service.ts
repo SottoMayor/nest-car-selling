@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Report } from './reports.entity';
@@ -15,5 +15,22 @@ export class ReportsService {
         report.user = user;
 
         return await this.reportRepository.save(report);
+    }
+
+    public async validateReport(approved: boolean, id: number): Promise<Report>{
+        // Verifying if approved is set, and if is a boolean
+        if(!approved || typeof approved !== 'boolean'){
+            throw new BadRequestException('Call this endpoint just if you wanna approve a report!');
+        }
+
+        const report = await this.reportRepository.findOne({ where: { id } });
+        if(!report) {
+            throw new NotFoundException('This report does not exist. Try again!')
+        }
+
+        report.approved = approved;
+
+        return await this.reportRepository.save(report);
+
     }
 }

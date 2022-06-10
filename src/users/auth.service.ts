@@ -12,13 +12,14 @@ export class AuthService {
         const { email, password } = body;
         
         const users = await this.usersService.find(email);
+        console.log('ok!')
         if(users.length > 0){
             throw new BadRequestException('This email is already in use!');
         }
         const hashedPassword = await hash(password, 12);
-
+        
         const newUser = await this.usersService.create({ email, password: hashedPassword });
-
+        
         return newUser;
     }
 
