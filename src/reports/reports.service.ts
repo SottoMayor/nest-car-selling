@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Report } from './reports.entity';
 import { CreateReportDto } from './dtos/CreateReport.dto';
-import { UsersService } from 'src/users/users.service';
 import { User } from 'src/users/users.entity';
 
 
