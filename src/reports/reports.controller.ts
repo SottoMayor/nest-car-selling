@@ -6,6 +6,7 @@ import { CurrentUser } from '../users/decorators/current-user.decorator'
 import { User } from 'src/users/users.entity';
 import { Serealize } from 'src/interceptors/serealize.interceptor';
 import { ReportsDto } from './dtos/Reports.dto';
+import { IsAdmin } from '../guards/admin.guard';
 
 
 @Controller('reports')
@@ -19,6 +20,7 @@ export class ReportsController {
         return await this.reportsService.createReport(body, user);
     }
 
+    @IsAdmin()
     // Here we can, of course, put a body DTO. But, for 1 param in this way is very lean and clear to solve.
     @Patch('/:id')
     public async validateReport(@Body('approved') approved: boolean, @Param('id') id: string){
