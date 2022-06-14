@@ -1,6 +1,16 @@
 import { Injectable, NestMiddleware } from "@nestjs/common";
 import { Request, Response, NextFunction } from "express";
 import { UsersService } from "../users.service";
+import { User } from '../users.entity';
+
+// Adding an additional property to an interface already declared
+declare global {
+    namespace Express {
+        interface Request {
+            user?: User
+        }
+    }
+}
 
 @Injectable()
 export class CurrentUserMiddleware implements NestMiddleware {
@@ -12,7 +22,6 @@ export class CurrentUserMiddleware implements NestMiddleware {
 
         if(userId) {
             const user = await this.usersService.findById(userId);
-            // @ts-ignore
             req.user = user;
         }
 
