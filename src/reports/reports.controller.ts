@@ -1,4 +1,4 @@
-import { Body, Controller, Patch, Post, Param } from '@nestjs/common';
+import { Body, Controller, Patch, Post, Param, Query, Get } from '@nestjs/common';
 import { ReportsService } from './reports.service';
 import { CreateReportDto } from './dtos/CreateReport.dto';
 import { IsAuth } from '../users/decorators/user-auth.decorator';
@@ -6,12 +6,18 @@ import { CurrentUser } from '../users/decorators/current-user.decorator'
 import { User } from 'src/users/users.entity';
 import { Serealize } from 'src/interceptors/serealize.interceptor';
 import { ReportsDto } from './dtos/Reports.dto';
+import { GetEstimateDto } from './dtos/GetEstimate.dto';
 import { IsAdmin } from '../guards/admin.guard';
 
 
 @Controller('reports')
 export class ReportsController {
     constructor(private reportsService: ReportsService){}
+
+    @Get('/estimate')
+    public async getEstimate(@Query() params: GetEstimateDto){
+        console.log(params);
+    }
 
     @IsAuth()
     @Post()
