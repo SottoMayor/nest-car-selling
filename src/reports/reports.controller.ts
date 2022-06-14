@@ -16,7 +16,7 @@ export class ReportsController {
 
     @Get('/estimate')
     public async getEstimate(@Query() params: GetEstimateDto){
-        console.log(params);
+        return await this.reportsService.createEstimate(params);
     }
 
     @IsAuth()
