@@ -13,9 +13,17 @@ export class ReportsService {
 
     public async createEstimate(estimateDto: GetEstimateDto){
         return await this.reportRepository.createQueryBuilder()
-        .select('*')
+        .select('AVG(price)', 'estimated_price')
         .where('make = :make', { make: estimateDto.make })
-        .getRawMany()
+        .andWhere('model = :model', { model: estimateDto.model})
+        .andWhere('lng - :lng BETWEEN -5 AND 5', { lng: estimateDto.lng})
+        .andWhere('lat - :lat BETWEEN -5 AND 5', { lat: estimateDto.lat})
+        .andWhere('year - :year BETWEEN -3 AND 3', { year: estimateDto.year})
+        .andWhere('approved IS TRUE')
+        .orderBy('ABS(mileage - :mileage)', 'DESC')
+        .setParameters({mileage: estimateDto.mileage})
+        .limit(3)
+        .getRawOne()
     }
 
     public async createReport(body: CreateReportDto, user: User): Promise<Report> {
