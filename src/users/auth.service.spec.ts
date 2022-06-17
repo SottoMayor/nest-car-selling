@@ -1,5 +1,6 @@
 import { UsersService } from "./users.service";
 import { AuthService } from "./auth.service";
+import { ConfigService } from "@nestjs/config";
 import { Test } from "@nestjs/testing";
 import { User } from './users.entity';
 import { BadRequestException, NotFoundException, UnprocessableEntityException } from "@nestjs/common";
@@ -27,10 +28,12 @@ describe('AuthService', () => {
         const module = await Test.createTestingModule({
             providers: [
                 AuthService,
+                ConfigService, // We need include this in ours tests if we are using env vars!
                 {
                     provide: UsersService,
                     useValue: fakeUsersService,
-                }
+                },
+                
             ]
         }).compile()
     
