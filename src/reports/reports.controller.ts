@@ -1,5 +1,6 @@
 import { Body, Controller, Patch, Post, Param, Query, Get } from '@nestjs/common';
 import { ReportsService } from './reports.service';
+import { VehicleDataService } from './vehicle-data.service';
 import { CreateReportDto } from './dtos/CreateReport.dto';
 import { IsAuth } from '../users/decorators/user-auth.decorator';
 import { CurrentUser } from '../users/decorators/current-user.decorator'
@@ -12,7 +13,12 @@ import { IsAdmin } from '../guards/admin.guard';
 
 @Controller('reports')
 export class ReportsController {
-    constructor(private reportsService: ReportsService){}
+    constructor(private reportsService: ReportsService, private vehicleDataService: VehicleDataService){}
+
+    @Get('/vehicle_data')
+    public async getVehicleData(){
+        return await this.vehicleDataService.getVehicleData();
+    }
 
     @Get('/estimate')
     public async getEstimate(@Query() params: GetEstimateDto){
