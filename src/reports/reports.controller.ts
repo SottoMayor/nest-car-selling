@@ -8,6 +8,7 @@ import { User } from 'src/users/users.entity';
 import { Serealize } from 'src/interceptors/serealize.interceptor';
 import { ReportsDto } from './dtos/Reports.dto';
 import { GetEstimateDto } from './dtos/GetEstimate.dto';
+import { GetVehicleDataDto } from './dtos/GetVehicleData.dto';
 import { IsAdmin } from '../guards/admin.guard';
 
 
@@ -16,8 +17,8 @@ export class ReportsController {
     constructor(private reportsService: ReportsService, private vehicleDataService: VehicleDataService){}
 
     @Get('/vehicle_data')
-    public async getVehicleData(){
-        return await this.vehicleDataService.getVehicleData();
+    public async getVehicleData(@Query() params: GetVehicleDataDto){
+        return await this.vehicleDataService.getVehicleData(params);
     }
 
     @Get('/estimate')
