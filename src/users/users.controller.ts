@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Patch, Delete, Param, Query, Session, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Get, Patch, Delete, Param, Query, Session } from '@nestjs/common';
 import { Serealize } from '../interceptors/serealize.interceptor';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import { UpdateUser } from './dtos/UpdateUser.dto';
@@ -8,6 +8,7 @@ import { UserDto } from './dtos/User.dto';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from './users.entity';
 import { IsAuth } from './decorators/user-auth.decorator';
+import { ApiQuery, ApiParam, ApiOperation  } from '@nestjs/swagger';
 
 // OBS: Serealize can be a decorator of method or class.
 //      Depending which DTO you wanna use to send the response!
@@ -46,6 +47,8 @@ export class UsersController {
     session.userId = null;
   }
 
+  @ApiParam({name: 'id', description: 'Search an user by the given id.', example: 1})
+  @ApiOperation({ summary: 'Find an user by ID',description: 'Some description here!' })
   @Get('/:id')
   async findUserById(@Param('id') id: string) {
     // Converting the id from string to number
@@ -54,6 +57,7 @@ export class UsersController {
     return await this.usersService.findById(parsedId);
   }
 
+  @ApiQuery({name: 'email', description: 'Search all users with this given email', example: 'test@test.com',  })
   @Get()
   async findUsers(@Query('email') email: string){
     return await this.usersService.find(email);
