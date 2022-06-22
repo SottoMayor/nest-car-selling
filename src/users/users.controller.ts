@@ -8,7 +8,7 @@ import { UserDto } from './dtos/User.dto';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from './users.entity';
 import { IsAuth } from './decorators/user-auth.decorator';
-import { ApiQuery, ApiParam, ApiOperation, ApiTags, ApiHeader, ApiResponse  } from '@nestjs/swagger';
+import { ApiQuery, ApiParam, ApiOperation, ApiTags, ApiHeader, ApiOkResponse  } from '@nestjs/swagger';
 
 // OBS: Serealize can be a decorator of method or class.
 //      Depending which DTO you wanna use to send the response!
@@ -56,6 +56,7 @@ export class UsersController {
     })
   @ApiParam({name: 'id', description: 'Search an user by the given id.', example: 1})
   @ApiOperation({ summary: 'Find an user by ID',description: 'Some description here!' })
+  @ApiOkResponse({ type: UserDto, description: 'The user was successfully retrieved.'})
   @Get('/:id')
   async findUserById(@Param('id') id: string) {
     // Converting the id from string to number

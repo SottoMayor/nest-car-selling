@@ -3,18 +3,36 @@ import { Report } from '../reports/reports.entity';
 
 @Entity()
 export class User {
+  /**
+   * The id of user.
+   * @example 1
+  */
   @PrimaryGeneratedColumn()
   id: number;
 
+  /**
+   * The email address registered
+   * @example 'test@test.com'
+  */
   @Column()
   email: string;
 
+  /**
+   * The hashed password
+   * @example 011f2c167b90d8838c9d6f00963800b00eb8c276
+   */
   @Column()
   password: string;
 
-  @Column({ default: true })
+  /**
+   * This user have powers of admin?
+  */
+  @Column({ default: false })
   admin: boolean;
 
+  /**
+   *  All reports associated with this user
+  */
   @OneToMany(() => Report, (report) => report.user)
   reports: Report[];
 
