@@ -8,11 +8,12 @@ import { UserDto } from './dtos/User.dto';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from './users.entity';
 import { IsAuth } from './decorators/user-auth.decorator';
-import { ApiQuery, ApiParam, ApiOperation  } from '@nestjs/swagger';
+import { ApiQuery, ApiParam, ApiOperation, ApiTags, ApiHeader, ApiResponse  } from '@nestjs/swagger';
 
 // OBS: Serealize can be a decorator of method or class.
 //      Depending which DTO you wanna use to send the response!
 
+@ApiTags('Auth')
 @Serealize(UserDto)
 @Controller('auth')
 export class UsersController {
@@ -47,6 +48,12 @@ export class UsersController {
     session.userId = null;
   }
 
+  //@ApiHeaders([{}, ..., {}])
+  @ApiHeader({
+      name: 'Content-Type',
+      description: 'Set the app content type',
+      example: 'application/json'
+    })
   @ApiParam({name: 'id', description: 'Search an user by the given id.', example: 1})
   @ApiOperation({ summary: 'Find an user by ID',description: 'Some description here!' })
   @Get('/:id')

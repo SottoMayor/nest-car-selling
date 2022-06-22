@@ -10,8 +10,10 @@ import { ReportsDto } from './dtos/Reports.dto';
 import { GetEstimateDto } from './dtos/GetEstimate.dto';
 import { GetVehicleDataDto } from './dtos/GetVehicleData.dto';
 import { IsAdmin } from '../guards/admin.guard';
+import { ApiTags } from '@nestjs/swagger';
 
 
+@ApiTags('Reports')
 @Controller('reports')
 export class ReportsController {
     constructor(private reportsService: ReportsService, private vehicleDataService: VehicleDataService){}
