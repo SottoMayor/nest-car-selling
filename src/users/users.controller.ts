@@ -1,15 +1,15 @@
 import { Controller, Post, Body, Get, Patch, Delete, Param, Query, Session } from '@nestjs/common';
+import { User } from './users.entity';
+import { AuthService } from './auth.service';
 import { Serealize } from '../interceptors/serealize.interceptor';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import { UpdateUser } from './dtos/UpdateUser.dto';
-import { UsersService } from './users.service';
-import { AuthService } from './auth.service';
 import { UserDto } from './dtos/User.dto';
-import { CurrentUser } from './decorators/current-user.decorator';
-import { User } from './users.entity';
-import { IsAuth } from './decorators/user-auth.decorator';
+import { UsersService } from './users.service';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
-import { FindUserByIdDocs } from './decorators/docs/controller.decorator';
+import { IsAuth } from './decorators/user-auth.decorator';
+import { CurrentUser } from './decorators/current-user.decorator';
+import { CreateUserDocs, FindUserByIdDocs, SigninDocs, WhoIamDocs } from './decorators/docs/controller.decorator';
 
 // OBS: Serealize can be a decorator of method or class.
 //      Depending which DTO you wanna use to send the response!
@@ -20,6 +20,7 @@ import { FindUserByIdDocs } from './decorators/docs/controller.decorator';
 export class UsersController {
   constructor(private usersService: UsersService, private authService: AuthService){}
 
+  @CreateUserDocs()
   @Post('/signup')
   async createUser(@Body() body: CreateUserDto, @Session() session: any) {
     const user = await this.authService.signup(body);
@@ -27,6 +28,7 @@ export class UsersController {
     return user;
   }
 
+  @SigninDocs()
   @Post('/signin')
   async Signin(@Body() body: CreateUserDto, @Session() session: any) {
     const user = await this.authService.signin(body);
@@ -38,6 +40,7 @@ export class UsersController {
   // async whoAmI(@Session() session: any) {
   //   return await this.usersService.findById(session.userId);
   // }
+  @WhoIamDocs()
   @Get('/whoami')
   @IsAuth()
   async whoAmI(@CurrentUser() user: User) {
