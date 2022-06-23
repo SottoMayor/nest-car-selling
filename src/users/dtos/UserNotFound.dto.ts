@@ -7,13 +7,13 @@ export class UserNotFoundDto {
 
     /**
      * Error message
-     * @example This user does not exist. 
+     * @example "This user does not exist."
     */
     message: string
 
     /**
      * Error type
-     * @example Not found
+     * @example "Not found"
     */
     error: string
 }

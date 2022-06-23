@@ -29,7 +29,6 @@ async function bootstrap() {
     .setTitle('Car Selling')
     .setDescription('Test API built with NestJs. The general idea is publish car ads.')
     .setVersion('1.0')
-    .addTag('Cars')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   const customOptions: SwaggerCustomOptions = {
