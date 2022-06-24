@@ -13,7 +13,7 @@ export class InternalServerErrorDto {
 
     /**
      * Error type
-     * @example "Internal Server Error
+     * @example "Internal Server Error"
     */
     error: string
 }
