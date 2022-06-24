@@ -9,7 +9,7 @@ import { UsersService } from './users.service';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { IsAuth } from './decorators/user-auth.decorator';
 import { CurrentUser } from './decorators/current-user.decorator';
-import { CreateUserDocs, FindUserByIdDocs, SigninDocs, WhoIamDocs } from './decorators/docs/controller.decorator';
+import { CreateUserDocs, FindUserByIdDocs, SigninDocs, SignoutDocs, WhoIamDocs, FindUsersDocs, UpdateUserDocs, RemoveUserDocs } from './decorators/docs/controller.decorator';
 
 // OBS: Serealize can be a decorator of method or class.
 //      Depending which DTO you wanna use to send the response!
@@ -47,6 +47,7 @@ export class UsersController {
     return user;
   }
 
+  @SignoutDocs()
   @Get('/signout')
   async signout(@Session() session: any) {
     session.userId = null;
@@ -61,18 +62,20 @@ export class UsersController {
     return await this.usersService.findById(parsedId);
   }
 
-  @ApiQuery({name: 'email', description: 'Search all users with this given email', example: 'test@test.com',  })
+  @FindUsersDocs()
   @Get()
   async findUsers(@Query('email') email: string){
     return await this.usersService.find(email);
   }
 
+  @UpdateUserDocs()
   @Patch('/:id')
   async updateUser(@Param('id') id: string, @Body() body: UpdateUser){
     const parsedId = parseInt(id);
     return await this.usersService.update(parsedId, body);
   }
 
+  @RemoveUserDocs()
   @Delete('/:id')
   async removeUser(@Param('id') id: string){
     const parsedId = parseInt(id);
