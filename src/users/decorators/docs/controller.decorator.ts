@@ -81,5 +81,6 @@ export function RemoveUserDocs() {
         + 'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s'}),
         ApiOkResponse({ description: 'The user was found and removed', type: UserDto}),
         ApiNotFoundResponse({ description: 'It could not find the user', type: UserNotFoundDto}),
+        ApiForbiddenResponse({ description: 'You need to be logged in to view this information.', type: UserErrorDto })
     )
 }

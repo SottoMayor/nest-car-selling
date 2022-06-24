@@ -6,8 +6,9 @@ import { CreateUserDto } from './dtos/CreateUser.dto';
 import { UpdateUser } from './dtos/UpdateUser.dto';
 import { UserDto } from './dtos/User.dto';
 import { UsersService } from './users.service';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { IsAuth } from './decorators/user-auth.decorator';
+import { IsAdmin } from 'src/guards/admin.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { CreateUserDocs, FindUserByIdDocs, SigninDocs, SignoutDocs, WhoIamDocs, FindUsersDocs, UpdateUserDocs, RemoveUserDocs } from './decorators/docs/controller.decorator';
 
@@ -76,6 +77,7 @@ export class UsersController {
   }
 
   @RemoveUserDocs()
+  @IsAdmin()
   @Delete('/:id')
   async removeUser(@Param('id') id: string){
     const parsedId = parseInt(id);
