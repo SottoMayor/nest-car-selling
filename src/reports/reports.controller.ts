@@ -18,6 +18,7 @@ import { ApiTags } from '@nestjs/swagger';
 export class ReportsController {
     constructor(private reportsService: ReportsService, private vehicleDataService: VehicleDataService){}
 
+    
     @Get('/vehicle_data')
     public async getVehicleData(@Query() params: GetVehicleDataDto){
         return await this.vehicleDataService.getVehicleData(params);
