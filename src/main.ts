@@ -1,11 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
-const cookieSession = require('cookie-session');
 import { ConfigModule } from '@nestjs/config';
 import { SwaggerModule, DocumentBuilder, SwaggerCustomOptions } from '@nestjs/swagger';
 import { join } from 'path';
+import { setupApp } from './setup-app';
 
 // This way we can set env vars with out call the ConfigService;
 ConfigModule.forRoot();
@@ -18,11 +17,8 @@ async function bootstrap() {
   // Serving files in a static folder
   app.useStaticAssets(join(__dirname, '..', 'assets'))
 
-  app.use(cookieSession({
-    keys: [process.env.COOKIE_KEY]
-  }))
-  
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  // Setting up the configs about cookie-session and validations
+  setupApp(app);
 
   // Swagger configs...
   const config = new DocumentBuilder()
