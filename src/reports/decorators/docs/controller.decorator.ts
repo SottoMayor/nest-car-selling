@@ -1,7 +1,7 @@
 import { applyDecorators } from "@nestjs/common";
 import { ApiOperation, ApiOkResponse, ApiCreatedResponse ,ApiInternalServerErrorResponse, ApiQuery, ApiBody, ApiBadRequestResponse, ApiNotFoundResponse, ApiForbiddenResponse } from "@nestjs/swagger";
-import { ReportsDto } from "src/reports/dtos/Reports.dto";
-import { BadRequestDto, ForbiddenDto, InternalServerErrorDto, NotFoundDto } from "src/reports/dtos/ReportsError.dto";
+import { ReportsDto } from "../../../reports/dtos/Reports.dto";
+import { BadRequestDto, ForbiddenDto, InternalServerErrorDto, NotFoundDto } from "../../../reports/dtos/ReportsError.dto";
 
 export function GetVehicleDataDocs() {
     return applyDecorators(

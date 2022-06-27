@@ -8,7 +8,7 @@ import { UserDto } from './dtos/User.dto';
 import { UsersService } from './users.service';
 import { ApiTags } from '@nestjs/swagger';
 import { IsAuth } from './decorators/user-auth.decorator';
-import { IsAdmin } from 'src/guards/admin.guard';
+import { IsAdmin } from '../guards/admin.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { CreateUserDocs, FindUserByIdDocs, SigninDocs, SignoutDocs, WhoIamDocs, FindUsersDocs, UpdateUserDocs, RemoveUserDocs } from './decorators/docs/controller.decorator';
 

@@ -2,7 +2,7 @@ import { applyDecorators } from "@nestjs/common";
 import { ApiHeader, ApiParam, ApiOperation, ApiOkResponse, ApiNotFoundResponse, ApiQuery , ApiCreatedResponse, ApiBadRequestResponse, ApiUnprocessableEntityResponse, ApiForbiddenResponse } from "@nestjs/swagger";
 import { UserNotFoundDto } from "../../dtos/UserNotFound.dto";
 import { UserDto } from "../../dtos/User.dto";
-import { UserErrorDto } from "src/users/dtos/UserError.dto";
+import { UserErrorDto } from "../../../users/dtos/UserError.dto";
 
 export function FindUserByIdDocs() {
     return applyDecorators(

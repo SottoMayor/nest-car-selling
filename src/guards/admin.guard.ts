@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext, UseGuards } from "@nestjs/common";
-import { User } from "src/users/users.entity";
+import { User } from "../users/users.entity";
 
 export function IsAdmin () {
     return UseGuards(AdminGuard);

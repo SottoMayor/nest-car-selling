@@ -4,8 +4,8 @@ import { VehicleDataService } from './vehicle-data.service';
 import { CreateReportDto } from './dtos/CreateReport.dto';
 import { IsAuth } from '../users/decorators/user-auth.decorator';
 import { CurrentUser } from '../users/decorators/current-user.decorator'
-import { User } from 'src/users/users.entity';
-import { Serealize } from 'src/interceptors/serealize.interceptor';
+import { User } from '../users/users.entity';
+import { Serealize } from '../interceptors/serealize.interceptor';
 import { ReportsDto } from './dtos/Reports.dto';
 import { GetEstimateDto } from './dtos/GetEstimate.dto';
 import { GetVehicleDataDto } from './dtos/GetVehicleData.dto';
