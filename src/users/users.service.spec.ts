@@ -1,28 +1,41 @@
 import { UsersService } from "./users.service";
-import { ConfigService } from "@nestjs/config";
+import { Repository } from "typeorm";
 import { Test } from "@nestjs/testing";
 import { User } from './users.entity';
+import { getRepositoryToken } from "@nestjs/typeorm";
 
-let service: UsersService;
 
 describe('UsersService', () => {
+    let service: UsersService;
     beforeEach(async () => {
-        const users = [ { id: 1, email: 'foo@bar.com', password: 'password123'} ]
+        const users: User[] = [{ id: 1, email: 'foo@bar.com', password: 'password123'} as User]; 
 
-        const fakeUsersService = {
-            create: () => {},
-            findById: (id: number) => {},
-            find: (email: string) => {},
-            update: (id: number, updatedData: Partial<User>) => {},
-            remove: (id: number) => {},
+        const fakeUsersRepository = {
+            create: ({ email, password }) => { 
+                const user =  {id: Math.floor(Math.random() * 99), email, password} as User
+                return Promise.resolve(user);
+            },
+            save: (user: User) => {
+                const foundIndex = users.findIndex(userData => userData.id === user.id);
+                if(foundIndex === -1){
+                    users.push(user)
+                    return Promise.resolve( user );
+                }
+                users[foundIndex] = user
+                return Promise.resolve( user );
+            },
+            findOne: () => {},
+            find: () => {},
+            remove: () => {},
         };
 
         // Defining the module which we wanna work on
         const module = await Test.createTestingModule({
             providers: [
+                UsersService,
                 {
-                    provide: UsersService, 
-                    useValue: fakeUsersService
+                    provide: getRepositoryToken(User),
+                    useValue: fakeUsersRepository
                 }
             ]
         }).compile()
@@ -34,5 +47,15 @@ describe('UsersService', () => {
     it('Can create an instance of Users service', async () => {
        // Arrange!
        expect(service).toBeDefined();
+    })
+
+    it('Creates a new User', async () => {
+        const userData = { email: 'test@example.com', password: 'test123'}
+        const user = await service.create(userData);
+
+        expect(user).toBeDefined();
+        expect(user.email).toBe('test@example.com');
+        expect(Object.keys(user)).toHaveLength(3);
+        expect(typeof user.password).toBe('string');
     })
 })
