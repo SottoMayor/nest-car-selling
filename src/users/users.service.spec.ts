@@ -1,9 +1,11 @@
 import { UsersService } from "./users.service";
-import { Repository } from "typeorm";
 import { Test } from "@nestjs/testing";
 import { User } from './users.entity';
 import { getRepositoryToken } from "@nestjs/typeorm";
+import { NotFoundException } from "@nestjs/common";
 
+type FindOneQuery = { where: { id: number } }
+type FindQuery = { where: { email: string } }
 
 describe('UsersService', () => {
     let service: UsersService;
@@ -24,8 +26,18 @@ describe('UsersService', () => {
                 users[foundIndex] = user
                 return Promise.resolve( user );
             },
-            findOne: () => {},
-            find: () => {},
+            findOne: (queryObj: FindOneQuery) => {
+                const { where: { id } } = queryObj;
+
+                const user = users.find(user => user.id === id);
+                return Promise.resolve(user);
+            },
+            find: (queryObj: FindQuery) => {
+                const { where: { email } } = queryObj;
+                const allUsers = users.filter(user => user.email === email);
+
+                return Promise.resolve( allUsers );
+            },
             remove: () => {},
         };
 
@@ -57,5 +69,30 @@ describe('UsersService', () => {
         expect(user.email).toBe('test@example.com');
         expect(Object.keys(user)).toHaveLength(3);
         expect(typeof user.password).toBe('string');
+    })
+
+    it('Throws a 404 error if the user does not exist', async () => {
+        const user = service.findById(1000);
+
+        await expect(user).rejects.toThrow(NotFoundException);
+    })
+
+    it('Returns an user with a given id', async () => {
+        const user = await service.findById(1);
+
+        expect(user).toBeDefined();
+    })
+
+    it('Returns an array of users, when the email was passed', async () => {
+        const usersArray = await service.find('foo@bar.com');
+
+        expect(usersArray.length).toBeGreaterThan(0)
+    })
+
+    it('Returns an empty array when the email not was found', async () => {
+        const usersArray = await service.find('this_not_exist@test.com');
+        console.log(usersArray)
+
+        expect(usersArray).toHaveLength(0);
     })
 })
