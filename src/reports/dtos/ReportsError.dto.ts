@@ -57,23 +57,3 @@ export class NotFoundDto {
     */
     error: string
 }
-
-export class ForbiddenDto {
-    /**
-     * Error status code
-     * @example 403 
-    */
-    statusCode: number
-
-    /**
-     * Error message
-     * @example "Forbidden resource."
-    */
-    message: string
-
-    /**
-     * Error type
-     * @example "Forbidden"
-    */
-    error: string
-}

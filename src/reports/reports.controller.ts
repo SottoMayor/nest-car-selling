@@ -11,7 +11,7 @@ import { GetEstimateDto } from './dtos/GetEstimate.dto';
 import { GetVehicleDataDto } from './dtos/GetVehicleData.dto';
 import { IsAdmin } from '../guards/admin.guard';
 import { ApiTags } from '@nestjs/swagger';
-import { GetEstimateDocs, GetVehicleDataDocs, CreateReportDocs, ValidateReportDocs } from './decorators/docs/controller.decorator';
+import { GetVehicleDataDocs } from './decorators/docs/controller.decorator';
 
 
 @ApiTags('Reports')
@@ -25,7 +25,6 @@ export class ReportsController {
         return await this.vehicleDataService.getVehicleData(params);
     }
 
-    @GetEstimateDocs()
     @Get('/estimate')
     public async getEstimate(@Query() params: GetEstimateDto){
         return await this.reportsService.createEstimate(params);
@@ -34,12 +33,10 @@ export class ReportsController {
     @IsAuth()
     @Post()
     @Serealize(ReportsDto)
-    @CreateReportDocs()
     public async createReport(@Body() body: CreateReportDto, @CurrentUser() user: User){
         return await this.reportsService.createReport(body, user);
     }
 
-    @ValidateReportDocs()
     @IsAdmin()
     // Here we can, of course, put a body DTO. But, for 1 param in this way is very lean and clear to solve.
     @Patch('/:id')
