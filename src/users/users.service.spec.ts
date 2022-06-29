@@ -10,7 +10,7 @@ type FindQuery = { where: { email: string } }
 describe('UsersService', () => {
     let service: UsersService;
     beforeEach(async () => {
-        const users: User[]  = [{ id: 1, email: 'foo@bar.com', password: 'password123'} as User]; 
+        const users: User[] = [{ id: 1, email: 'foo@bar.com', password: 'password123'} as User]; 
 
         const fakeUsersRepository = {
             create: ({ email, password }) => { 
@@ -38,12 +38,7 @@ describe('UsersService', () => {
 
                 return Promise.resolve( allUsers );
             },
-            remove: (user: User) => {
-                const userIndex = users.findIndex(userData => user.id === userData.id);
-                users.splice(userIndex, 1)
-
-                return Promise.resolve( user );
-            },
+            remove: () => {},
         };
 
         // Defining the module which we wanna work on
@@ -112,14 +107,5 @@ describe('UsersService', () => {
         const updatedUser = await service.update(1, { email: 'test@test.com' })
 
         expect(updatedUser.email).toEqual('test@test.com');
-    })
-
-    it('Removes an user by id', async () => {
-        const id = 1
-
-        const deletedUser = await service.remove(id);
-
-        expect(deletedUser).toBeDefined();
-        expect(deletedUser.id).toEqual(id);
     })
 })
