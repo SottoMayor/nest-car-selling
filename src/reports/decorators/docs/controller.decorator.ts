@@ -1,6 +1,6 @@
 import { applyDecorators } from "@nestjs/common";
 import { ApiOperation, ApiOkResponse, ApiInternalServerErrorResponse, ApiQuery } from "@nestjs/swagger";
-import { InternalServerErrorDto } from "src/reports/dtos/ReportsError.dto";
+import { InternalServerErrorDto } from "../../../reports/dtos/ReportsError.dto";
 
 export function GetVehicleDataDocs() {
     return applyDecorators(
