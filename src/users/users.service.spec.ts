@@ -95,4 +95,17 @@ describe('UsersService', () => {
 
         expect(usersArray).toHaveLength(0);
     })
+
+    it('Updates an user with new email and password', async () => {
+        const updatedUser = await service.update(1, { email: 'test@test.com', password: 'newPassword'})
+
+        expect(updatedUser.email).toEqual('test@test.com');
+        expect(updatedUser.password).toEqual('newPassword');
+    })
+
+    it('Updates an user with partial data (in this case, only the email)', async () => {
+        const updatedUser = await service.update(1, { email: 'test@test.com' })
+
+        expect(updatedUser.email).toEqual('test@test.com');
+    })
 })
