@@ -20,6 +20,9 @@ import { Report } from './reports/reports.entity';
         return {
           type: 'sqlite',
           database: config.get<string>('DB_NAME'),
+          host: config.get<string>('DB_HOST'),
+          username: config.get<string>('DB_USER'),
+          password: config.get<string>('DB_PASSWORD'),
           entities: [User, Report],
           synchronize: true,
         }

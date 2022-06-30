@@ -27,7 +27,7 @@ async function bootstrap() {
   // Swagger configs...
   const config = new DocumentBuilder()
     .setTitle('Car Selling')
-    .setDescription('Test API built with NestJs. The general idea is publish car ads.')
+    .setDescription('<h1>Test API built with NestJs. The general idea is publish car ads.</h1>')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
