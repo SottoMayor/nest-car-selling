@@ -24,7 +24,7 @@ import { Report } from './reports/reports.entity';
           username: config.get<string>('DB_USER'),
           password: config.get<string>('DB_PASSWORD'),
           entities: [User, Report],
-          synchronize: true,
+          synchronize: false,
         }
       }
     }),
